@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::{path::{PathBuf}, fs::{copy, self}};
+use std::{path::PathBuf, fs::copy};
 use tempfile::NamedTempFile;
 use exitfailure::ExitFailure;
 use std::ffi::OsStr;
@@ -37,6 +37,14 @@ fn main() -> Result<(), ExitFailure> {
     // println!("{:?}", filename);
 
     copy(tmp, &filename)?;
+
+    // We unwrap with a dummy value to streamline the execution.
+    let ext = filename.extension().unwrap_or(OsStr::new(""));
+
+    match ext.to_str().unwrap_or("") {
+        "zip" => extract(&filename)?,
+        _ => (),
+    }
 
     Ok(())
 }
