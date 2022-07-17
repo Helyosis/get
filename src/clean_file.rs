@@ -12,7 +12,10 @@ pub fn clean(url: &String) -> Result<String, ExitFailure> {
     filename_string.push_str(filename);
 
     let re = Regex::new(r"_[a-f0-9]+")?;
-    filename_string = re.replace_all(&filename_string, "").to_string();
-
+    if re.is_match(&filename_string) {
+        print!("Renaming {} to ", filename_string);
+        filename_string = re.replace_all(&filename_string, "").to_string();
+        println!("{}", filename_string);
+    }
     return Ok(filename_string);
 }
